@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">My Movies</string>
+    <string name="rating">Viewer Rating</string>
+    <string name="year">Year</string>
+    <string name="genre">Genre</string>
+    <string name="enter_genre_here">Enter genre here</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="enter_movie_title_here">Enter movie title here</string>
+    <string name="enter_year_of_release_here">Enter year of release here</string>
+    <string name="insert">Insert</string>
+    <string name="show_list">Show list</string>
+    <string name="movie_id">Movie ID</string>
+    <string name="update">Update</string>
+    <string name="cancel">CANCEL</string>
+    <string name="delete">Delete</string>
+    <string name="_4">4</string>
+    <string name="show_all_PG13_movies">SHOW ALL PG-13 MOVIES</string>
+    <string name="back">BACK</string>
+    <string name="_2023">2023</string>
+</resources>
