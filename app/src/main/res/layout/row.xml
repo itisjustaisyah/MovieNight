@@ -25,13 +25,15 @@
             android:layout_height="wrap_content"
             android:text="2023"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="12sp" />
+            android:textSize="20sp" />
 
         <ImageView
                 android:padding="12dp"
                 android:id="@id/ivRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxHeight="70dp"
+                android:adjustViewBounds="true"
                 app:srcCompat="@drawable/rating_g"
                 android:layout_gravity="start"/>
 
@@ -54,6 +56,6 @@
         android:layout_height="wrap_content"
         android:text="@string/genre"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
-        android:textSize="12sp" />
+        android:textSize="15sp" />
 
 </LinearLayout>

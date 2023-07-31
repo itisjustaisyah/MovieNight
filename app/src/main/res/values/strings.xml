@@ -17,4 +17,6 @@
     <string name="show_all_PG13_movies">SHOW ALL PG-13 MOVIES</string>
     <string name="back">BACK</string>
     <string name="_2023">2023</string>
+    <string name="show_movies_of_all_ratings">Show movies of all ratings</string>
+    <string name="show_all_movies_with_this_rating">Show all movies with this rating</string>
 </resources>

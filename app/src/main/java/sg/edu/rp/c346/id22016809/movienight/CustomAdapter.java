@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 /**
@@ -53,7 +55,7 @@ public class CustomAdapter extends ArrayAdapter {
 //        tvRating.setText(selectedMovie.ratingToString());
         tvGenre.setText(selectedMovie.getGenre());
 
-        int rIcon = 0;
+/*        int rIcon = 0;
         switch (selectedMovie.getMovieRating()){
             case "G":
                 rIcon = R.drawable.rating_g;
@@ -74,8 +76,33 @@ public class CustomAdapter extends ArrayAdapter {
                 rIcon = R.drawable.rating_r21;
                 break;
             default:
+        }*/
+
+        String imageUrl = "";
+
+        switch (selectedMovie.getMovieRating()){
+            case "G":
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/8/83/IMDA_Age_Rating_-_General_Audiences.png";
+                break;
+            case"PG":
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/22/IMDA_Age_Rating_-_Parental_Guidance.png";
+                break;
+            case "PG13":
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/f/fe/IMDA_Age_Rating_-_Parental_Guidance_for_Under_13.png";
+                break;
+            case "NC16":
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e6/IMDA_Age_Rating_-_No_Children_Under_16.png";
+                break;
+            case "M18":
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/4/43/IMDA_Age_Rating_-_Mature_18.png";
+                break;
+            case "R21":
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/2/2d/IMDA_Age_Rating_-_Restricted_21.png";
+                break;
+            default:
         }
-        ivRating.setImageResource(rIcon);
+        Picasso.with(parent_context).load(imageUrl).into(ivRating);
+//        ivRating.setImageResource(rIcon);
 
         return rowView;
     }

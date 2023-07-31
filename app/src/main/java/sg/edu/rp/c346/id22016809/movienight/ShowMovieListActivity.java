@@ -1,5 +1,6 @@
 package sg.edu.rp.c346.id22016809.movienight;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,18 +20,21 @@ public class ShowMovieListActivity extends AppCompatActivity {
 
     ListView listview;
     Button back;
-    ToggleButton fiveStars;
+    ToggleButton toggleButton;
 
-    Spinner yearSpinner;
+    Spinner spinner;
     ArrayList<Movie> movieAL;
-    ArrayList<Integer> yearAL;
+    //    ArrayList<Integer> yearAL;
+    String[] ratingAR;
 
     DBHelper dbh;
-    ArrayAdapter<?> yearAA;
+//    ArrayAdapter<?> yearAA;
+    ArrayAdapter<?> ratingAA;
     CustomAdapter songAA;
 
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +42,8 @@ public class ShowMovieListActivity extends AppCompatActivity {
         listview = findViewById(R.id.listView);
 
         back = findViewById(R.id.back);
-        fiveStars = findViewById(R.id.pg13Toggle);
-        yearSpinner = findViewById(R.id.yearSpinner);
+        toggleButton = findViewById(R.id.pg13Toggle);
+        spinner = findViewById(R.id.yearSpinner);
 
         dbh = new DBHelper(ShowMovieListActivity.this);
         movieAL = dbh.getSongs();
@@ -47,11 +51,16 @@ public class ShowMovieListActivity extends AppCompatActivity {
 
         listview.setAdapter(songAA);
         retrieveSongs();
+        ratingAR = new String[] {"G", "PG", "PG13", "NC16", "M18", "R21"};
 
-        yearAA = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, yearAL);
-        yearAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        yearSpinner.setAdapter(yearAA);
-        yearSpinner.setSelection(yearAL.size()-1);
+        ratingAA = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, ratingAR);
+        ratingAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(ratingAA);
+        spinner.setSelection(0);
+//        yearAA = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, yearAL);
+//        yearAA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        yearSpinner.setAdapter(yearAA);
+//        yearSpinner.setSelection(yearAL.size()-1);
 
 
         listview.setOnItemClickListener((parent, view, position, id) -> {
@@ -63,36 +72,27 @@ public class ShowMovieListActivity extends AppCompatActivity {
 
         back.setOnClickListener(v -> startActivity(new Intent(ShowMovieListActivity.this, MainActivity.class)));
 
-        fiveStars.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            String filter = spinner.getSelectedItem().toString();
             if(isChecked){
                 movieAL.clear();
-                movieAL.addAll(dbh.getMoviesWithRating("PG13"));
+                movieAL.addAll(dbh.getMoviesWithRating(filter));
 
                 songAA.notifyDataSetChanged();
-                yearAA.notifyDataSetChanged();
+//                yearAA.notifyDataSetChanged();
                 dbh.close();
-                Toast.makeText(ShowMovieListActivity.this, "Showing PG-13", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShowMovieListActivity.this, "Showing filter", Toast.LENGTH_SHORT).show();
 
             }else{
                 retrieveSongs();
                 Toast.makeText(ShowMovieListActivity.this, "Showing all ratings", Toast.LENGTH_SHORT).show();
             }
         });
-        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int filterYear = yearAL.get(position);
-                if (filterYear == 0) {
-                    retrieveSongs();
-                    Toast.makeText(ShowMovieListActivity.this, "Showing All", Toast.LENGTH_SHORT).show();
-                }else{
-                    movieAL.clear();
-                    movieAL.addAll(dbh.getMoviesWithYear((int) filterYear));
-
-                    songAA.notifyDataSetChanged();
-                    dbh.close();
-                    Toast.makeText(ShowMovieListActivity.this, "Showing songs from: " + filterYear, Toast.LENGTH_SHORT).show();
-                }
+                String filter = spinner.getSelectedItem().toString();
             }
 
             @Override
@@ -100,25 +100,48 @@ public class ShowMovieListActivity extends AppCompatActivity {
 
             }
         });
+
+        /*yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String filter = *//*yearAL.get(position)*//* ratingAR[position];
+                if (filter.isEmpty()) {
+                    retrieveSongs();
+                    Toast.makeText(ShowMovieListActivity.this, "Showing All", Toast.LENGTH_SHORT).show();
+                }else{
+                    movieAL.clear();
+                    movieAL.addAll(dbh.getMoviesWithRating(filter));
+
+                    songAA.notifyDataSetChanged();
+                    dbh.close();
+                    Toast.makeText(ShowMovieListActivity.this, "Showing songs from: " + filter, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });*/
     }
 
     @Override
     protected void onResume() {
-        yearSpinner.setSelection(yearAL.size()-1);
+        spinner.setSelection(0);
         super.onResume();
         retrieveSongs();
         songAA.notifyDataSetChanged();
-        yearAA.notifyDataSetChanged();
+        ratingAA.notifyDataSetChanged();
     }
 
     public void retrieveSongs() {
         movieAL.clear();
         movieAL.addAll(dbh.getSongs());
-        yearAL = new ArrayList<>();
-        for (Movie movie : movieAL) {
-            yearAL.add(movie.getYear());
-        }
-        yearAL.add(0);
+//        ratingAR = new ArrayList<>();
+//        for (Movie movie : movieAL) {
+//            ratingAR.add(movie.getYear());
+//        }
+//        ratingAR.add(0);
         songAA.notifyDataSetChanged();
         dbh.close();
     }

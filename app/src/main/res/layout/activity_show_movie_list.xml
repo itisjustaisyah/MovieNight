@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             android:text="@string/show_all_PG13_movies"
             android:checked="false"
-            android:textOff="@string/show_all_PG13_movies"
-            android:textOn="@string/show_all_PG13_movies" />
+            android:textOff="@string/show_all_movies_with_this_rating"
+            android:textOn="@string/show_movies_of_all_ratings" />
 
     <Spinner
             android:id="@+id/yearSpinner"
