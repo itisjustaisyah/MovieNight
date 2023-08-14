@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EditMovieActivity extends AppCompatActivity {
@@ -77,12 +78,34 @@ public class EditMovieActivity extends AppCompatActivity {
             }
             startActivity(new Intent(EditMovieActivity.this, ShowMovieListActivity.class));
         });
-        cancel.setOnClickListener(v -> startActivity(new Intent(EditMovieActivity.this, ShowMovieListActivity.class)));
+        cancel.setOnClickListener(v -> {
+            AlertDialog.Builder myBuilder = new AlertDialog.Builder(EditMovieActivity.this);
+            myBuilder.setTitle("Danger");
+            myBuilder.setMessage("Are you sure you want to discard changes");
+            myBuilder.setCancelable(false);
+            myBuilder.setNegativeButton("Discard", (dialog, which) -> {
+                startActivity(new Intent(EditMovieActivity.this, ShowMovieListActivity.class));
+            });
+            myBuilder.setPositiveButton("Do Not Discard", null);
+            AlertDialog myDialog = myBuilder.create();
+            myDialog.show();
+        });
         delete.setOnClickListener(v -> {
-            dbh.deleteMovie(data.getId());
-            startActivity(new Intent(EditMovieActivity.this, ShowMovieListActivity.class));
-            Log.i("Edit Activty", "Deleted successfully");
-            Toast.makeText(this, "Deleted Movie Successfully", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder myBuilder = new AlertDialog.Builder(EditMovieActivity.this);
+            myBuilder.setTitle("Danger");
+            myBuilder.setMessage("Are you sure you want to delete the movie " + data.getTitle());
+            myBuilder.setCancelable(false);
+            myBuilder.setNegativeButton("Delete", (dialog, which) -> {
+                dbh.deleteMovie(data.getId());
+                startActivity(new Intent(EditMovieActivity.this, ShowMovieListActivity.class));
+                Log.i("Edit Activty", "Deleted successfully");
+                Toast.makeText(this, "Deleted Movie Successfully", Toast.LENGTH_SHORT).show();
+            });
+            myBuilder.setPositiveButton("Cancel", null);
+
+            AlertDialog myDialog = myBuilder.create();
+            myDialog.show();
+
         });
     }
 
