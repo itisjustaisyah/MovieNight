@@ -72,27 +72,13 @@ public class ShowMovieListActivity extends AppCompatActivity {
 
         back.setOnClickListener(v -> startActivity(new Intent(ShowMovieListActivity.this, MainActivity.class)));
 
-        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            String filter = spinner.getSelectedItem().toString();
-            if(isChecked){
-                movieAL.clear();
-                movieAL.addAll(dbh.getMoviesWithRating(filter));
-
-                songAA.notifyDataSetChanged();
-//                yearAA.notifyDataSetChanged();
-                dbh.close();
-                Toast.makeText(ShowMovieListActivity.this, "Showing filter", Toast.LENGTH_SHORT).show();
-
-            }else{
-                retrieveSongs();
-                Toast.makeText(ShowMovieListActivity.this, "Showing all ratings", Toast.LENGTH_SHORT).show();
-            }
-        });
+        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> showFilter(isChecked));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String filter = spinner.getSelectedItem().toString();
+                showFilter(toggleButton.isChecked());
             }
 
             @Override
@@ -144,5 +130,22 @@ public class ShowMovieListActivity extends AppCompatActivity {
 //        ratingAR.add(0);
         songAA.notifyDataSetChanged();
         dbh.close();
+    }
+
+    public void showFilter(boolean isChecked) {
+        String filter = spinner.getSelectedItem().toString();
+        if (isChecked) {
+            movieAL.clear();
+            movieAL.addAll(dbh.getMoviesWithRating(filter));
+
+            songAA.notifyDataSetChanged();
+//                yearAA.notifyDataSetChanged();
+            dbh.close();
+            Toast.makeText(ShowMovieListActivity.this, "Showing filter", Toast.LENGTH_SHORT).show();
+
+        } else {
+            retrieveSongs();
+            Toast.makeText(ShowMovieListActivity.this, "Showing all ratings", Toast.LENGTH_SHORT).show();
+        }
     }
 }
